@@ -71,7 +71,8 @@ public class FeedItem implements Serializable {
     private transient List<Chapter> chapters;
     private String imageUrl;
 
-    private boolean autoDownloadEnabled = true;
+    // todo: use enum
+    private int autoDownloadType = 0;
 
     /**
      * Any tags assigned to this item
@@ -88,7 +89,7 @@ public class FeedItem implements Serializable {
      * */
     public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
                     boolean hasChapters, String imageUrl, int state,
-                    String itemIdentifier, boolean autoDownloadEnabled, String podcastIndexChapterUrl,
+                    String itemIdentifier, int autoDownloadType, String podcastIndexChapterUrl,
                     String transcriptType, String transcriptUrl) {
         this.id = id;
         this.title = title;
@@ -100,7 +101,7 @@ public class FeedItem implements Serializable {
         this.imageUrl = imageUrl;
         this.state = state;
         this.itemIdentifier = itemIdentifier;
-        this.autoDownloadEnabled = autoDownloadEnabled;
+        this.autoDownloadType = autoDownloadType;
         this.podcastIndexChapterUrl = podcastIndexChapterUrl;
         if (transcriptUrl != null) {
             this.podcastIndexTranscriptUrl = transcriptUrl;
@@ -389,11 +390,17 @@ public class FeedItem implements Serializable {
     }
 
     public void disableAutoDownload() {
-        this.autoDownloadEnabled = false;
+        this.autoDownloadType = 0;
     }
 
+    @Deprecated
     public boolean isAutoDownloadEnabled() {
-        return this.autoDownloadEnabled;
+        return this.autoDownloadType != 0;
+    }
+
+    // Todo : return enum
+    public int getAutoDownloadType() {
+        return this.autoDownloadType;
     }
 
     public boolean isDownloaded() {

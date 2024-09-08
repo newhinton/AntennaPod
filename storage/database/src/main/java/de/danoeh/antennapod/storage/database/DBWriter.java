@@ -16,6 +16,7 @@ import de.danoeh.antennapod.event.DownloadLogEvent;
 
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadType;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueSink;
@@ -749,9 +750,10 @@ public class DBWriter {
     @NonNull
     public static Future<?> markItemForAutodownload(FeedItem item) {
         return runOnDbThread(() -> {
+
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            adapter.setFeedItemAutoDownload(item.getId());
+            adapter.setFeedItemAutoDownload(item.getId(), AutoDownloadType.QUEUE);
             adapter.close();
 
             EventBus.getDefault().post(FeedItemEvent.updated(item));

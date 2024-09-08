@@ -65,7 +65,7 @@ public class FeedItemCursor extends CursorWrapper {
                 getString(indexImageUrl),
                 getInt(indexRead),
                 getString(indexItemIdentifier),
-                getLong(indexAutoDownload) > 0,
+                getInt(indexAutoDownload),
                 getString(indexPodcastIndexChapterUrl),
                 getString(indexPodcastIndexTranscriptType),
                 getString(indexPodcastIndexTranscriptUrl));

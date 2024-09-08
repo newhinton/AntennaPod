@@ -37,6 +37,8 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadType;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemFilterQuery;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemSortQuery;
 
@@ -505,11 +507,11 @@ public class PodDBAdapter {
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
     }
 
-    public void setFeedItemAutoDownload(long feedItemId) {
+    public void setFeedItemAutoDownload(long feedItemId, AutoDownloadType type) {
         Log.d(TAG, String.format(Locale.US,
                 "setFeedItemAutoDownload() called with: feedId = [%d]", feedItemId));
         ContentValues values = new ContentValues();
-        values.put(KEY_AUTO_DOWNLOAD_ENABLED, true);
+        values.put(KEY_AUTO_DOWNLOAD_ENABLED, type.ordinal());
         db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(feedItemId)});
     }
 
@@ -685,7 +687,7 @@ public class PodDBAdapter {
         }
         values.put(KEY_HAS_CHAPTERS, item.getChapters() != null || item.hasChapters());
         values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
-        values.put(KEY_AUTO_DOWNLOAD_ENABLED, item.isAutoDownloadEnabled());
+        values.put(KEY_AUTO_DOWNLOAD_ENABLED, item.getAutoDownloadType());
         values.put(KEY_IMAGE_URL, item.getImageUrl());
         values.put(KEY_PODCASTINDEX_CHAPTER_URL, item.getPodcastIndexChapterUrl());
 

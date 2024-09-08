@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.concurrent.Future;
 
 public abstract class AutoDownloadManager {
+
     private static AutoDownloadManager instance;
 
     public static AutoDownloadManager getInstance() {

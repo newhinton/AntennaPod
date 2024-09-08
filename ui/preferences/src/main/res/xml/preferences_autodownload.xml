@@ -8,7 +8,8 @@
             android:key="prefEnableAutoDl"
             android:title="@string/pref_automatic_download_title"
             search:summary="@string/pref_automatic_download_sum"
-            android:defaultValue="false"/>
+            app:isPreferenceVisible="false"
+            android:defaultValue="true"/>
     <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
             android:defaultValue="25"
             android:entries="@array/episode_cache_size_entries"
@@ -16,6 +17,11 @@
             android:title="@string/pref_episode_cache_title"
             android:summary="@string/pref_episode_cache_summary"
             android:entryValues="@array/episode_cache_size_values"/>
+    <SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="prefAutoDownloadNewEpisodesDefault"
+            android:summary="Default for new Podcasts"
+            android:title="Auto Download new Episodes"/>
     <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="prefKeepQueueDownloaded"

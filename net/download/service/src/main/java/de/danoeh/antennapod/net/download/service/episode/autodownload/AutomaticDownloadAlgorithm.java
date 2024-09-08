@@ -6,14 +6,17 @@ import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadType;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -70,6 +73,7 @@ public class AutomaticDownloadAlgorithm {
                 Iterator<FeedItem> it = candidates.iterator();
                 while (it.hasNext()) {
                     FeedItem item = it.next();
+
                     if (!item.isAutoDownloadEnabled()
                             || item.isDownloaded()
                             || !item.hasMedia()
@@ -93,11 +97,19 @@ public class AutomaticDownloadAlgorithm {
                     episodeSpaceLeft = episodeCacheSize - (downloadedEpisodes - deletedEpisodes);
                 }
 
+
                 List<FeedItem> itemsToDownload = candidates.subList(0, episodeSpaceLeft);
                 if (itemsToDownload.size() > 0) {
                     Log.d(TAG, "Enqueueing " + itemsToDownload.size() + " items for download");
 
                     for (FeedItem episode : itemsToDownload) {
+                        DownloadServiceInterface.get().download(context, episode);
+                    }
+                }
+
+                // process items that are in the queue anyway:
+                for (FeedItem episode : candidates) {
+                    if(episode.getAutoDownloadType() == AutoDownloadType.QUEUE.ordinal()) {
                         DownloadServiceInterface.get().download(context, episode);
                     }
                 }

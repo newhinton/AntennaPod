@@ -474,6 +474,7 @@ public class FeedSettingsFragment extends Fragment {
             pref.setEnabled(UserPreferences.isEnableAutodownload());
             if (UserPreferences.isEnableAutodownload()) {
                 pref.setChecked(feedPreferences.getAutoDownload());
+                pref.setSummary("Turned on because of default settings");
             } else {
                 pref.setChecked(false);
                 pref.setSummary(R.string.auto_download_disabled_globally);
